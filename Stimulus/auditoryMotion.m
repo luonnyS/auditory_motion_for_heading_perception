@@ -105,7 +105,7 @@ AUDITORY.sourceDegree = {[-25,-24.9;-22.5,-22.4;-20,-19.9;-17.5,-17.4;-15,-14.9;
 AUDITORY.sourceLifeTimeSplit =1;%cell2mat(AUDITORY.sourceNum);
 
 % parameter for coherence
-AUDITORY.coherence =0.8; % the influenced sources number = round( (1-coherence) * courceNum )
+AUDITORY.coherence ={0.8, 0.1}; % the influenced sources number = round( (1-coherence) * courceNum )
 AUDITORY.coherenceDirection = 0; % 0 random, 1 same as heading side in x axis
 AUDITORY.coherenceVelocity = 1; % how many times of the heading velocity in x-axis component
 
@@ -128,8 +128,8 @@ calculateConditions();
 % {visualDegree visualDistance visualTime, ...
 %       1               2               3
 %
-% auditoryDegree auditoryDistance auditoryTime sourceNum sourceDegree(:) sourceDistance(:) sourceHead(:)}
-%       4               5               6                7              8                9                  10
+% auditoryDegree auditoryDistance auditoryTime sourceNum sourceDegree(:) sourceDistance(:) sourceHead(:) coherence}
+%       4               5               6                7              8               9                  10              11
 
 trialIndex = repmat(1:size(TRIALINFO.trialConditions,1),1,TRIALINFO.repetition);
 trialNum = size(trialIndex,2);
@@ -315,8 +315,8 @@ while trialI < trialNum+1
     % auditoryDegree auditoryDistance auditoryTime ...
     %       4                                   5                           6
     %
-    % sourceNum sourceDegree(:) sourceDistance(:) sourceHead(:)}
-    %       7                      8                                  9                         10
+    % sourceNum sourceDegree(:) sourceDistance(:) sourceHead(:) coherence}
+    %       7                      8                                  9                        10                     11
     
     conditioni = TRIALINFO.trialConditions(trialIndex(trialOrder(trialI)),:);
     visualHeadingi = cell2mat(conditioni(1:3));
@@ -324,6 +324,7 @@ while trialI < trialNum+1
     auditorySourcei = conditioni(7:10);
     visualPresent = ~any(isnan(visualHeadingi));
     soundPresent = ~any(isnan(auditorySourcei{1}));
+    coherencei = cell2mat(conditioni(11));
     
     if visualPresent
         [vx,vy,vz,vfx,vfy,vfz] = calMove(visualHeadingi,SCREEN.refreshRate);
@@ -397,7 +398,7 @@ while trialI < trialNum+1
     end
     if soundPresent
         [ax,ay,az,~,~,~] = calMove(auditoryHeadingi,SCREEN.refreshRate);
-        audioCoherenceNum = round(auditorySourcei{1}*(1-AUDITORY.coherence));
+        audioCoherenceNum = round(auditorySourcei{1}*(1-coherencei));
         audioCoherenceIndex = randperm(auditorySourcei{1},audioCoherenceNum);
         if AUDITORY.coherenceDirection == 0
             seta = rand;

@@ -33,3 +33,5 @@ octave-workspace
 # ignore data file
 *.asv
 *.mat
+
+*.wav
