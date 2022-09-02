@@ -52,7 +52,7 @@ feedbackDuration = 1; % unit s
 %% parameters
 coordinateMuilty = 1; % convert m to coordinate system for moving distance etc.
 TRIALINFO.repetition      =10;
-TRIALINFO.headingDegree   = {-15,15};
+TRIALINFO.headingDegree   = {15};
 TRIALINFO.headingDistance = {0.3*coordinateMuilty};
 TRIALINFO.headingTime      = {1}; % second
 TRIALINFO.stimulusType     = [1]; % 0 for visual only, 1 for auditory only, 2 for both provided
@@ -105,9 +105,9 @@ AUDITORY.sourceDegree = {[-25,-24.9;-22.5,-22.4;-20,-19.9;-17.5,-17.4;-15,-14.9;
 AUDITORY.sourceLifeTimeSplit =1;%cell2mat(AUDITORY.sourceNum);
 
 % parameter for coherence
-AUDITORY.coherence ={0.8, 0.1}; % the influenced sources number = round( (1-coherence) * courceNum )
-AUDITORY.coherenceDirection = 0; % 0 random, 1 same as heading side in x axis
-AUDITORY.coherenceVelocity = 1; % how many times of the heading velocity in x-axis component
+AUDITORY.coherence ={1,0.8,0.6,0.5,0.4,0.2,0}; % the influenced sources number = round( (1-coherence) * courceNum )
+AUDITORY.coherenceDirection = 1; % 0 random, 1 same as heading side in x axis
+AUDITORY.coherenceVelocity = 2; % how many times of the heading velocity in x-axis component
 
 % parameter for lift time
 AUDITORY.sourceInitial = 0.03; % second
@@ -656,13 +656,13 @@ while trialI < trialNum+1
     if feedback
         if choice(trialI,1) == correctAnswer
             % sound(0.2*sin(2*pi*25*(1:3000)/200)); % correct cue
-            [~, ~, ~] = DrawFormattedText(win, 'You are right!','center',SCREEN.center(2)/2,[20 200 20]);
+            [~, ~, ~] = DrawFormattedText(win, 'Right','center',SCREEN.center(2)/2,[20 200 20]);
             if eyelinkMode
                 Eyelink('message', ['Decision made ' num2str(trialI)]);
             end
         elseif choice(trialI,1)
             % sound(0.2*sin(2*pi*25*(1:3000)/600)); % wrong cue
-            [~, ~, ~] = DrawFormattedText(win, 'Please try again.','center',SCREEN.center(2)/2,[200 20 20]);
+            [~, ~, ~] = DrawFormattedText(win, 'Left','center',SCREEN.center(2)/2,[200 20 20]);
             if eyelinkMode
                 Eyelink('message', ['Decision made ' num2str(trialI)]);
             end
