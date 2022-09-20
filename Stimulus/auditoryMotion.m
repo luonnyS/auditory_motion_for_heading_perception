@@ -8,6 +8,7 @@
 CloseOpenAL;
 clear all STARDATA
 close all
+Screen('Preference', 'SkipSyncTests', 1);
 
 global TRIALINFO
 global SCREEN
@@ -38,9 +39,11 @@ skipKey   = KbName('space');
 escape    = KbName('ESCAPE');
 leftKey   = KbName('LeftArrow');
 rightKey  = KbName('RightArrow');
-upArror   = KbName('UpArrow');
+upKey   = KbName('UpArrow');
 cKey      = KbName('c'); % force calibration, temporally not in use
 enter     = KbName('Return');
+downKey   = KbName('DownArrow');
+
 
 pageUp = KbName('pageup'); % increase binocular deviation
 pageDown = KbName('pagedown'); % decrease binocular deviation
@@ -51,12 +54,13 @@ feedbackDuration = 1; % unit s
 %% parameters
 coordinateMuilty = 1; % convert m to coordinate system for moving distance etc.
 TRIALINFO.repetition      =8;
- TRIALINFO.headingDegree   = {-18,18,-12,12,-8,8,-3,3};
+ TRIALINFO.headingDegree   = {-18,18};
 %TRIALINFO.headingDegree   = {-90,-45,0,45,90};
 TRIALINFO.headingDistance = {1*coordinateMuilty};
 TRIALINFO.headingTime      = {2}; % second
 TRIALINFO.stimulusType     = [0]; % 0 for visual only, 1 for auditory only, 2 for both provided
-TRIALINFO.unisensoryRatio  = [1,2];
+TRIALINFO.unisensoryRatio  = [1];
+
 
 TRIALINFO.choicePeriod        = 2; % second
 TRIALINFO.intertrialInterval = 1; % second
@@ -289,9 +293,9 @@ SCREEN.refreshRate = Screen('NominalFrameRate', SCREEN.screenId);
 
 %% the configuration of the Frustum
 calculateFrustum(coordinateMuilty);
-VISUAL.dimensionY = SCREEN.heightM/SCREEN.distance*FRUSTUM.clipFar;
+VISUAL.dimensionX = SCREEN.heightM/SCREEN.distance*FRUSTUM.clipFar;
 
-[VISUAL.dimensionX, VISUAL.dimensionZ] = generateDimensionField(AUDITORY.headingDistance,...
+[VISUAL.dimensionY, VISUAL.dimensionZ] = generateDimensionField(AUDITORY.headingDistance,...
     VISUAL.headingDegree,FRUSTUM.checkLeft,FRUSTUM.checkRight,FRUSTUM.clipFar);
 
 Screen('BeginOpenGL', win);
@@ -689,10 +693,10 @@ while trialI < trialNum+1
         
         % RT mode,
         [ ~, ~, keyCode ] = KbCheck;
-        if keyCode(leftKey)
+        if keyCode(downKey)
             choice(trialI,:) = [1,trialI];
             choiceTime(trialI,:) = [toc(startChoice),trialI];
-        elseif keyCode(rightKey)
+        elseif keyCode(upKey)
             choice(trialI,:) = [2,trialI];
             choiceTime(trialI,:) = [toc(startChoice),trialI];
         end
@@ -740,10 +744,10 @@ while trialI < trialNum+1
     %--------RT mode------
       while toc(startChoice) <= TRIALINFO.choicePeriod+timei
          [ ~, ~, keyCode ] = KbCheck;
-         if keyCode(leftKey)
+         if keyCode(downKey)
              choice(trialI,:) = [1,trialI];
              choiceTime(trialI,:) = [toc(startChoice),trialI];
-         elseif keyCode(rightKey)
+         elseif keyCode(upKey)
              choice(trialI,:) = [2,trialI];
              choiceTime(trialI,:) = [toc(startChoice),trialI];
          end
