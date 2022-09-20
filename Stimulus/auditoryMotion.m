@@ -54,12 +54,13 @@ feedbackDuration = 1; % unit s
 %% parameters
 coordinateMuilty = 1; % convert m to coordinate system for moving distance etc.
 TRIALINFO.repetition      =8;
- TRIALINFO.headingDegree   = {-18,18};
+TRIALINFO.headingDegree   = {-18,18};
 %TRIALINFO.headingDegree   = {-90,-45,0,45,90};
 TRIALINFO.headingDistance = {1*coordinateMuilty};
 TRIALINFO.headingTime      = {2}; % second
 TRIALINFO.stimulusType     = [0]; % 0 for visual only, 1 for auditory only, 2 for both provided
-TRIALINFO.unisensoryRatio  = [1];
+TRIALINFO.unisensoryRatio  = [1]; % visual: auditroy
+TRIALINFO.Horizontal_or_Vertical=[0];% 0 for horizontal heading, 1 for vertical heading
 
 
 TRIALINFO.choicePeriod        = 2; % second
@@ -293,11 +294,19 @@ SCREEN.refreshRate = Screen('NominalFrameRate', SCREEN.screenId);
 
 %% the configuration of the Frustum
 calculateFrustum(coordinateMuilty);
-VISUAL.dimensionX = SCREEN.heightM/SCREEN.distance*FRUSTUM.clipFar;
+if TRIALINFO.Horizontal_or_Vertical==0
+   VISUAL.dimensionY = SCREEN.heightM/SCREEN.distance*FRUSTUM.clipFar;
 
-[VISUAL.dimensionY, VISUAL.dimensionZ] = generateDimensionField(AUDITORY.headingDistance,...
+   [VISUAL.dimensionX, VISUAL.dimensionZ] = generateDimensionField(AUDITORY.headingDistance,...
     VISUAL.headingDegree,FRUSTUM.checkLeft,FRUSTUM.checkRight,FRUSTUM.clipFar);
+end
 
+if TRIALINFO.Horizontal_or_Vertical==1
+   VISUAL.dimensionX = SCREEN.heightM/SCREEN.distance*FRUSTUM.clipFar;
+
+   [VISUAL.dimensionY, VISUAL.dimensionZ] = generateDimensionField(AUDITORY.headingDistance,...
+    VISUAL.headingDegree,FRUSTUM.checkLeft,FRUSTUM.checkRight,FRUSTUM.clipFar);
+end
 Screen('BeginOpenGL', win);
 glViewport(0, 0, RectWidth(winRect), RectHeight(winRect));
 glColorMask(GL.TRUE, GL.TRUE, GL.TRUE, GL.TRUE);
@@ -438,7 +447,7 @@ while trialI < trialNum+1
     soundPresent = ~any(isnan(auditorySourcei{1}));
     
     if visualPresent
-        [vx,vy,vz,vfx,vfy,vfz] = calMove(visualHeadingi,SCREEN.refreshRate);
+        [vx,vy,vz,vfx,vfy,vfz] = calMove(visualHeadingi,SCREEN.refreshRate,TRIALINFO.Horizontal_or_Vertical);
     else
         clear vx vy vz vfx vfy vfz
     end
@@ -514,7 +523,7 @@ while trialI < trialNum+1
             end
         end
         
-        [ax,ay,az,~,~,~] = calMove(auditoryHeadingi,SCREEN.refreshRate);
+        [ax,ay,az,~,~,~] = calMove(auditoryHeadingi,SCREEN.refreshRate,TRIALINFO.Horizontal_or_Vertical);
         audioCoherenceNum = round(auditorySourcei{1}*(1-AUDITORY.coherence));
         audioCoherenceIndex = randperm(auditorySourcei{1},audioCoherenceNum);
         if AUDITORY.coherenceDirection == 0
@@ -693,10 +702,10 @@ while trialI < trialNum+1
         
         % RT mode,
         [ ~, ~, keyCode ] = KbCheck;
-        if keyCode(downKey)
+        if keyCode(downKey)|| keyCode(leftKey)
             choice(trialI,:) = [1,trialI];
             choiceTime(trialI,:) = [toc(startChoice),trialI];
-        elseif keyCode(upKey)
+        elseif keyCode(upKey)|| keyCode(rightKey)
             choice(trialI,:) = [2,trialI];
             choiceTime(trialI,:) = [toc(startChoice),trialI];
         end
@@ -744,10 +753,10 @@ while trialI < trialNum+1
     %--------RT mode------
       while toc(startChoice) <= TRIALINFO.choicePeriod+timei
          [ ~, ~, keyCode ] = KbCheck;
-         if keyCode(downKey)
+         if keyCode(downKey)|| keyCode(leftKey)
              choice(trialI,:) = [1,trialI];
              choiceTime(trialI,:) = [toc(startChoice),trialI];
-         elseif keyCode(upKey)
+         elseif keyCode(upKey)|| keyCode(rightKey)
              choice(trialI,:) = [2,trialI];
              choiceTime(trialI,:) = [toc(startChoice),trialI];
          end
