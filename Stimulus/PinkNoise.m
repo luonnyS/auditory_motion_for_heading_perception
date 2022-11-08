@@ -5,7 +5,7 @@ Data=zeros(100,100);
        y=zeros(100,100);
        %filei=['Noise' num2str(1000*(i-1)+100*(j-1)+l) '.wav'];   
        fs = 44.1e3;
-       duration = 1.2;
+       duration = 2;
        Octa=["1 octave" "2/3 octave" "1/2 octave" "1/3 octave" "1/6 octave" "1/12 octave" "1/24 octave" "1/48 octave"];
        Roct=randperm(length(Octa));
        %oscillationFrequency = randi([100,900],1,1);% about amplitude of dB, recommend range 100 900
@@ -28,7 +28,7 @@ Data=zeros(100,100);
        y= octFilt(y);
        y=y.*reshape(sin((1:numel(y))*2*pi/(osiFreGroup(i)*fs/1000)),size(y,1),size(y,2));
        plot(y);
-       filei=['D:\LQY\auditory_motion_for_heading_perception220215\Stimulus Lifetime\1200ms\Noise' num2str(i+80) '.wav'];
+       filei=['D:\LQY\Stimulus coherence\2000ms\Noise' num2str(i+32) '.wav'];
        audiowrite(filei,y,fs);
       end
 %  ----------------------------average power spectral density-------------------

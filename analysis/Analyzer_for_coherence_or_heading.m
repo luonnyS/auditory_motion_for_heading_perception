@@ -1,7 +1,7 @@
 close all;
 clear all;
 
-FileName=('Z:\LQY Experiment\DOTS\tester5\auditoryMotion_GHR9_2207211833.mat');
+FileName=('D:\LQY\Stimulus coherence\data\auditoryMotion__2211011329.mat');
 [pathstr,name]=fileparts(FileName);
 load(fullfile(pathstr,name));
 
@@ -9,15 +9,27 @@ load(fullfile(pathstr,name));
 %get number of parameters (X here) u need to fit in AUDITORY struct
 %coh Analyzer: "coherence"; heading Analyzer: "headingDegree"
 Parameter_need_to_fit='headingDegree';% "coherence" or "headingDegree"
+%------------get modality-------
+if TRIALINFO.stimulusType==1
+   Modality_need_to_fit=AUDITORY;
+else Modality_need_to_fit=VISUAL;
+end
+%-------------------------------
+Flag_for_DDM=0;
 switch Parameter_need_to_fit
     case 'coherence'
-          Number_X=length(getfield(AUDITORY, Parameter_need_to_fit));
-          X=sort(cell2mat(getfield(AUDITORY, Parameter_need_to_fit)));  
+          Number_X=length(getfield(Modality_need_to_fit, Parameter_need_to_fit));
+          X=sort(cell2mat(getfield(Modality_need_to_fit, Parameter_need_to_fit)));  
           choice_X_list=[choice(:,1),cell2mat(conditionIndex(:,11))];
     case 'headingDegree'
-          Number_X=length(getfield(AUDITORY, Parameter_need_to_fit));
-          X=sort(cell2mat(getfield(AUDITORY, Parameter_need_to_fit)));  
+          Number_X=length(getfield(Modality_need_to_fit, Parameter_need_to_fit));
+          X=sort(cell2mat(getfield(Modality_need_to_fit, Parameter_need_to_fit)));  
+          if TRIALINFO.stimulusType==1
           choice_X_list=[choice(:,1),cell2mat(conditionIndex(:,4))];
+          end
+          if TRIALINFO.stimulusType==0 || TRIALINFO.stimulusType==2
+          choice_X_list=[choice(:,1),cell2mat(conditionIndex(:,1))];
+          end
     otherwise disp('other value');
 end
 
@@ -56,25 +68,27 @@ text(6,0.8,sprintf('\\it\\mu_{psy} = \\rm%6.3g\\circ',aBias),'color','b')
 text(5,0.7,sprintf('\\it\\sigma_{psy} = \\rm%6.3g\\circ', aThreshold),'color','b');
 saveas(gcf,fullfile(pathstr,name),'jpg');
 %csv file for DDM
-for i=1:size(choice_X_list,1)
-    if ((choice_X_list(i,2)<0.5) && (choice_X_list(i,1)==1)) || ((choice_X_list(i,2)>0.5) && (choice_X_list(i,1)==2))
+if Flag_for_DDM==1
+ for i=1:size(choice_X_list,1)
+     if ((choice_X_list(i,2)<0.5) && (choice_X_list(i,1)==1)) || ((choice_X_list(i,2)>0.5) && (choice_X_list(i,1)==2))
         choice_X_list(i,3)=1;
-    end
+     end
 
-    if ((choice_X_list(i,2)<0.5) && (choice_X_list(i,1)==2)) || ((choice_X_list(i,2)>0.5) && (choice_X_list(i,1)==1))
+     if ((choice_X_list(i,2)<0.5) && (choice_X_list(i,1)==2)) || ((choice_X_list(i,2)>0.5) && (choice_X_list(i,1)==1))
         choice_X_list(i,3)=0;
-    end
+     end
     
-    if choice_X_list(i,2)==0.5
-            seed=rand(1);
-            if (seed<0.5 && choice_X_list(i,1)==1) || (seed>0.5 && choice_X_list(i,1)==2)
-            choice_X_list(i,3)=1;
-            else choice_X_list(i,3)=0;
-            end
-    end   
-end
+     if choice_X_list(i,2)==0.5
+             seed=rand(1);
+             if (seed<0.5 && choice_X_list(i,1)==1) || (seed>0.5 && choice_X_list(i,1)==2)
+             choice_X_list(i,3)=1;
+             else choice_X_list(i,3)=0;
+             end
+     end   
+ end
 
-cohList=[choiceTime(:,1),choice_X_list(:,2),choice_X_list(:,3),choice_X_list(:,1)];
-colNames={'rt','coh','correct','trgchoice'};
-cohTable=array2table(cohList,'VariableNames',colNames);
-writetable(cohTable,'Z:\LQY Experiment\Cohtest\csvfile\auditoryMotion_CohtestC_2208221444.csv');
+ cohList=[choiceTime(:,1),choice_X_list(:,2),choice_X_list(:,3),choice_X_list(:,1)];
+ colNames={'rt','coh','correct','trgchoice'};
+ cohTable=array2table(cohList,'VariableNames',colNames);
+ writetable(cohTable,'Z:\LQY Experiment\Cohtest\csvfile\auditoryMotion_CohtestC_2208221444.csv');
+end
