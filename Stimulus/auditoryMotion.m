@@ -86,7 +86,7 @@ VISUAL.fixationWindow = 2; % degree
 VISUAL.density   = 300;    % num/m^3
 VISUAL.coherence = 1; % in percent
 VISUAL.probability = VISUAL.coherence;
-VISUAL.lifeTime  = 5; % frame number
+VISUAL.lifeTime  = 60; % frame number
 
 VISUAL.starSize = 0.1;    % degree
 
