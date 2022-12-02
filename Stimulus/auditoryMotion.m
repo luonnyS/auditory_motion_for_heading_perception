@@ -52,8 +52,8 @@ feedbackDuration = 1; % unit s
 
 %% parameters
 coordinateMuilty = 1; % convert m to coordinate system for moving distance etc.
-TRIALINFO.repetition      =12;
-TRIALINFO.headingDegree   = {25,-25}%{8,-8,4,-4,2,-2,1,-1};
+TRIALINFO.repetition      =10;
+TRIALINFO.headingDegree   = {25,-25,-10,10,-5,5,-3,3}%{8,-8,4,-4,2,-2,1,-1};
 TRIALINFO.headingDistance = {2*coordinateMuilty};
 TRIALINFO.headingTime      = {2}; % second
 TRIALINFO.stimulusType     = [1]; % 0 for visual only, 1 for auditory only, 2 for both provided
@@ -150,8 +150,8 @@ AUDITORY.MotionCoherence ={1}; % the influenced sources number = round( (1-coher
 AUDITORY.MotionCoherenceDirection = 1; % 0 random, 1 same as heading side in x axis
 AUDITORY.MotionCoherenceVelocity = 2;% how many times of the heading velocity in x-axis component
 AUDITORY.coherence ={0};
-AUDITORY.coherenceFrameInitial = 60;
-AUDITORY.coherenceFrameDuration = 40;
+AUDITORY.coherenceFrameInitial = 50;
+AUDITORY.coherenceFrameDuration = 20;
 AUDITORY.coherenceFrameTerminal = AUDITORY.coherenceFrameInitial + AUDITORY.coherenceFrameDuration;
 AUDITORY.coherenceFrame = (AUDITORY.coherenceFrameInitial: AUDITORY.coherenceFrameTerminal);
 
