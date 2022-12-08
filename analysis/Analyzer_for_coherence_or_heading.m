@@ -1,7 +1,7 @@
 close all;
 clear all;
 
-FileName=('Z:\LQY Experiment\split\auditoryMotion_split3_2211181623.mat');
+FileName=('Z:\LQY Experiment\split\auditoryMotion__split5.mat');
 [pathstr,name]=fileparts(FileName);
 load(fullfile(pathstr,name));
 color=['b','k','r','p'];
@@ -13,21 +13,21 @@ Parameter_need_to_fit='coherence';% "coherence" or "headingDegree"
 %------------get modality-------
 if ismember(0,TRIALINFO.stimulusType)
    Modality_need_to_fit=VISUAL;
-   VisTrial=find(isnan(cell2mat(conditionIndex(:,4))));
+   VisTrial=find(isnan(cell2mat(conditionIndex(:,5))));
    Vis_conditionIndex=conditionIndex(VisTrial,:);
    Vis_choice=choice(VisTrial,:);
 end
 
 if ismember(1,TRIALINFO.stimulusType)
    Modality_need_to_fit=AUDITORY;
-   AudiTrial=find(isnan(cell2mat(conditionIndex(:,1))));
+   AudiTrial=find(isnan(cell2mat(conditionIndex(:,2))));
    Audi_conditionIndex=conditionIndex(AudiTrial,:);
    Audi_choice=choice(AudiTrial,:);
 end
    
 if ismember(2,TRIALINFO.stimulusType)
    Modality_need_to_fit=AUDITORY;
-   CombTrial=find(isnan(cell2mat(conditionIndex(:,1)))==0 & isnan(cell2mat(conditionIndex(:,4)))==0);
+   CombTrial=find(isnan(cell2mat(conditionIndex(:,2)))==0 & isnan(cell2mat(conditionIndex(:,5)))==0);
    Comb_conditionIndex=conditionIndex(CombTrial,:);
    Comb_choice=choice(CombTrial,:);
 end
@@ -44,40 +44,66 @@ switch Parameter_need_to_fit
     case 'coherence'
           Number_X=length(getfield(Modality_need_to_fit, Parameter_need_to_fit));
           X=sort(cell2mat(getfield(Modality_need_to_fit, Parameter_need_to_fit)));  
-          for i=1:length(choice)
-              if cell2mat(conditionIndex(i,4))<0
-                 heading_degree(i,1)=1;
-              else heading_degree(i,1)=2;
+          if ismember(0,TRIALINFO.stimulusType)
+              choice_X_list{modality}=[Vis_choice(:,2),cell2mat(Vis_conditionIndex(:,1))];
+              for i=1:length(Vis_choice)
+                  if cell2mat(conditionIndex(i,2))<0
+                      heading_degree{modality}(i,1)=1;
+                  else heading_degree{modality}(i,1)=2;
+                  end
               end
+              modality=modality+1;
           end
-          choice_X_list{1}=[choice(:,1),cell2mat(conditionIndex(:,12))];
+          
+          if ismember(1,TRIALINFO.stimulusType)
+             choice_X_list{modality}=[Audi_choice(:,2),cell2mat(conditionIndex(:,13))];
+             for i=1:length(Audi_choice)
+                 if cell2mat(conditionIndex(i,5))<0
+                     heading_degree{modality}(i,1)=1;
+                 else heading_degree{modality}(i,1)=2;
+                 end
+             end
+             modality=modality+1;
+          end
+        
+          if ismember(2,TRIALINFO.stimulusType)
+             choice_X_list{modality}=[Comb_choice(:,2),cell2mat(conditionIndex(:,13))];
+             for i=1:length(Comb_choice)
+                 if cell2mat(conditionIndex(i,5))<0
+                     heading_degree{modality}(i,1)=1;
+                 else heading_degree{modality}(i,1)=2;
+                 end
+             end
+          end
+          
+    
     case 'headingDegree'
           Number_X=length(getfield(Modality_need_to_fit, Parameter_need_to_fit));
           X=sort(cell2mat(getfield(Modality_need_to_fit, Parameter_need_to_fit))); 
           
           if ismember(0,TRIALINFO.stimulusType)
-          choice_X_list{:,:,modality}=[Vis_choice(:,1),cell2mat(Vis_conditionIndex(:,1))];
+          choice_X_list{:,:,modality}=[Vis_choice(:,2),cell2mat(Vis_conditionIndex(:,2))];
           modality=modality+1;
           end
           if ismember(1,TRIALINFO.stimulusType)
-          choice_X_list{:,:,modality}=[Audi_choice(:,1),cell2mat(Audi_conditionIndex(:,4))];
+          choice_X_list{:,:,modality}=[Audi_choice(:,2),cell2mat(Audi_conditionIndex(:,5))];
           modality=modality+1;
           end
-         if ismember(2,TRIALINFO.stimulusType)
-          choice_X_list{:,:,modality}=[Comb_choice(:,1),cell2mat(Comb_conditionIndex(:,1))];
-         end
+          if ismember(2,TRIALINFO.stimulusType)
+          choice_X_list{:,:,modality}=[Comb_choice(:,2),cell2mat(Comb_conditionIndex(:,2))];
+          end
        
     otherwise disp('other value');
 end
 
 % a matrix to count rightchoice times in each X (heading discrimination) (choice_X_list{l}(i,1)==2)
-% a matrix to count correct choice times in each X (coherence) (choice_X_list{l}(i,1)==2)
+% a matrix to count correct choice times in each X (coherence) (choice_X_list{l}(i,1)==heading_degree{l}(i,1))
 
 for l=1:size(choice_X_list,3)
     Counter=zeros(Number_X,1);
   for i=1:size(choice_X_list{l},1)
      for j=1:Number_X  
-       if (choice_X_list{l}(i,2)==X(j)) &&  (choice_X_list{l}(i,1)==2)
+       if (choice_X_list{l}(i,2)==X(j)) &&  (choice_X_list{l}(i,1)==heading_degree{l}(i,1))
           Counter(j)=Counter(j)+1;
        end
      end

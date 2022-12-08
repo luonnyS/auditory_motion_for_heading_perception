@@ -150,10 +150,9 @@ AUDITORY.MotionCoherence ={1}; % the influenced sources number = round( (1-coher
 AUDITORY.MotionCoherenceDirection = 1; % 0 random, 1 same as heading side in x axis
 AUDITORY.MotionCoherenceVelocity = 2;% how many times of the heading velocity in x-axis component
 AUDITORY.coherence ={0};
-AUDITORY.coherenceFrameInitial = 50;
-AUDITORY.coherenceFrameDuration = 20;
-AUDITORY.coherenceFrameTerminal = AUDITORY.coherenceFrameInitial + AUDITORY.coherenceFrameDuration;
-AUDITORY.coherenceFrame = (AUDITORY.coherenceFrameInitial: AUDITORY.coherenceFrameTerminal);
+AUDITORY.coherenceFrameInitial = {50}; %jitter parameter
+AUDITORY.coherenceFrameDuration = {20}; %jitter parameter
+
 
 % parameter for lift time
 AUDITORY.sourceInitial = 0; % second
@@ -174,8 +173,10 @@ calculateConditions();
 % {visualDegree visualDistance visualTime, ...
 %       1               2               3
 %
-% auditoryDegree auditoryDistance auditoryTime sourceNum sourceDegree(:) sourceDistance(:) sourceHead(:) Motioncoherence coherence}
+% auditoryDegree auditoryDistance auditoryTime sourceNum sourceDegree(:) sourceDistance(:) sourceHead(:) Motioncoherence coherence
 %       4               5               6                7              8               9                  10              11                12 
+% coherenceFrameInitial coherenceFrameDuration}
+%           13                   14   
 
 trialIndex = repmat(1:size(TRIALINFO.trialConditions,1),1,TRIALINFO.repetition);
 trialNum = size(trialIndex,2);
@@ -361,9 +362,10 @@ while trialI < trialNum+1
     % auditoryDegree auditoryDistance auditoryTime ...
     %       4                                   5                           6
     %
-    % sourceNum sourceDegree(:) sourceDistance(:) sourceHead(:) MotoionCoherence  coherence}
+    % sourceNum sourceDegree(:) sourceDistance(:) sourceHead(:) MotoionCoherence  coherence
     %       7                      8                                  9                        10                 11               12 
-    
+    % coherenceFrameInitial coherenceFrameDuration}
+    %           13                   14   
     conditioni = TRIALINFO.trialConditions(trialIndex(trialOrder(trialI)),:);
     visualHeadingi = cell2mat(conditioni(1:3));
     auditoryHeadingi = cell2mat(conditioni(4:6));
@@ -372,7 +374,11 @@ while trialI < trialNum+1
     soundPresent = ~any(isnan(auditorySourcei{1}));
     MotionCoherencei = cell2mat(conditioni(11));
     coherencei = cell2mat(conditioni(12));
-    
+    % jitter parameters
+    coherenceFrameInitiali = cell2mat(conditioni(13));
+    coherenceFrameDuationi = cell2mat(conditioni(14));
+    coherenceFrameTerminali = coherenceFrameInitiali + coherenceFrameDurationi;
+    coherenceFramei = (coherenceFrameInitiali: coherenceFrameTerminali);
     
     if visualPresent
         [vx,vy,vz,vfx,vfy,vfz] = calMove(visualHeadingi,SCREEN.refreshRate);
@@ -528,7 +534,7 @@ while trialI < trialNum+1
         end
         if soundPresent
             
-            if mod(framei,auditoryLifetimeF)==0 && framei~=frameNum && ismember (framei,AUDITORY.coherenceFrame) == 0
+            if mod(framei,auditoryLifetimeF)==0 && framei~=frameNum && ismember (framei,coherenceFramei) == 0
                 for i = 1:auditorySourcei{1}
                     if coherencei < rand ()
                     alSource3f(sources(i), AL.DIRECTION, sind(auditorySourcei{end}(i)), 0, -cosd(auditorySourcei{end}(i)));
