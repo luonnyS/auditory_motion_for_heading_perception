@@ -1,15 +1,16 @@
 close all;
 clear all;
 
-FileName=('Z:\LQY Experiment\split\auditoryMotion__split5.mat');
+FileName=('Z:\LQY Experiment\split\auditoryMotion__2212081545.mat');
 [pathstr,name]=fileparts(FileName);
 load(fullfile(pathstr,name));
 color=['b','k','r','p'];
-
+coherent_duration=unique(cell2mat(conditionIndex(:,14)));
+conditionIndex=conditionIndex(find(cell2mat(conditionIndex(:,14))==coherent_duration(2)),:);
 
 %get number of parameters (X here) u need to fit in AUDITORY struct
 %coh Analyzer: "coherence"; heading Analyzer: "headingDegree"
-Parameter_need_to_fit='coherence';% "coherence" or "headingDegree"
+Parameter_need_to_fit='headingDegree';% "coherence" or "headingDegree"
 %------------get modality-------
 if ismember(0,TRIALINFO.stimulusType)
    Modality_need_to_fit=VISUAL;
@@ -81,16 +82,17 @@ switch Parameter_need_to_fit
           Number_X=length(getfield(Modality_need_to_fit, Parameter_need_to_fit));
           X=sort(cell2mat(getfield(Modality_need_to_fit, Parameter_need_to_fit))); 
           
+          
           if ismember(0,TRIALINFO.stimulusType)
-          choice_X_list{:,:,modality}=[Vis_choice(:,2),cell2mat(Vis_conditionIndex(:,2))];
+          choice_X_list{:,:,modality}=[Vis_choice(:,1),cell2mat(Vis_conditionIndex(:,1))];
           modality=modality+1;
           end
           if ismember(1,TRIALINFO.stimulusType)
-          choice_X_list{:,:,modality}=[Audi_choice(:,2),cell2mat(Audi_conditionIndex(:,5))];
+          choice_X_list{:,:,modality}=[Audi_choice(:,1),cell2mat(Audi_conditionIndex(:,4))];
           modality=modality+1;
           end
           if ismember(2,TRIALINFO.stimulusType)
-          choice_X_list{:,:,modality}=[Comb_choice(:,2),cell2mat(Comb_conditionIndex(:,2))];
+          choice_X_list{:,:,modality}=[Comb_choice(:,1),cell2mat(Comb_conditionIndex(:,1))];
           end
        
     otherwise disp('other value');
@@ -103,7 +105,7 @@ for l=1:size(choice_X_list,3)
     Counter=zeros(Number_X,1);
   for i=1:size(choice_X_list{l},1)
      for j=1:Number_X  
-       if (choice_X_list{l}(i,2)==X(j)) &&  (choice_X_list{l}(i,1)==heading_degree{l}(i,1))
+       if (choice_X_list{l}(i,2)==X(j)) &&  (choice_X_list{l}(i,1)==2)
           Counter(j)=Counter(j)+1;
        end
      end
@@ -128,13 +130,14 @@ hold on
 plot(aUniqueDeg,aPR,'*');
 plot(xi,y_fit,'-','color',color(l));
 set(gca, 'xlim',[min(aUniqueDeg),max(aUniqueDeg)],'ylim',[0 1])
-xlabel('Coherence');
+xlabel(Parameter_need_to_fit);
 ylabel('Proportion of "right" choice');
 title(['Participant ']);
 text(6,0.3+l*0.15,sprintf('\\it\\mu_{psy} = \\rm%6.3g\\circ',aBias),'color',color(l))
 text(6,0.25+l*0.15,sprintf('\\it\\sigma_{psy} = \\rm%6.3g\\circ', aThreshold),'color',color(l));
 hold on
 end
+
 saveas(gcf,fullfile(pathstr,name),'jpg');
 %csv file for DDM
 if Flag_for_DDM==1
