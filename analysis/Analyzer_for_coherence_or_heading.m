@@ -1,12 +1,13 @@
 close all;
 clear all;
 
-FileName=('Z:\LQY Experiment\split\auditoryMotion__2212081545.mat');
+FileName=('D:\LQY\auditory_motion_for_heading_perception\Stimulus\data\auditoryMotion_tester3_test3_2301061527.mat');
 [pathstr,name]=fileparts(FileName);
 load(fullfile(pathstr,name));
 color=['b','k','r','p'];
 coherent_duration=unique(cell2mat(conditionIndex(:,14)));
-conditionIndex=conditionIndex(find(cell2mat(conditionIndex(:,14))==coherent_duration(2)),:);
+conditionIndex=conditionIndex(find(cell2mat(conditionIndex(:,14))==coherent_duration(1)),:);
+choice=choice(cell2mat(conditionIndex(:,15)),:);
 
 %get number of parameters (X here) u need to fit in AUDITORY struct
 %coh Analyzer: "coherence"; heading Analyzer: "headingDegree"
