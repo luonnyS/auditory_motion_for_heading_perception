@@ -57,9 +57,10 @@ TRIALINFO.headingDegree   = {-40,40,-25,25,-10,10,-5,5};%{8,-8,4,-4,2,-2,1,-1};
 TRIALINFO.headingDistance = {2*coordinateMuilty};
 TRIALINFO.headingTime      = {2}; % second
 TRIALINFO.stimulusType     = [1]; % 0 for visual only, 1 for auditory only, 2 for both provided
+TRIALINFO.coherenceFrameInitial = {20}; %jitter parameter
+TRIALINFO.coherenceFrameDuration = {60}; %jitter parameter
 
-
-TRIALINFO.choicePeriod        = 2; % second
+TRIALINFO.choicePeriod        = 3; % second
 TRIALINFO.intertrialInterval = 1; % second
 TRIALINFO.fixationPeriod     = 0; % second
 TRIALINFO.fixationSizeD      = 0.25; % degree
@@ -76,6 +77,8 @@ deviationAdjust     = 0.001; % how fast to adjust the deviation by key pressing,
 
 % parameters for visual cue
 VISUAL.headingDegree = TRIALINFO.headingDegree; % cell
+VISUAL.coherenceFrameInitial = TRIALINFO.coherenceFrameInitial; %jitter parameter
+VISUAL.coherenceFrameDuration = TRIALINFO.coherenceFrameDuration; %jitter parameter
 VISUAL.headingDegreeDelta = {0 20 -20 40 -40}; % delta degree for segregation condition
 
 VISUAL.headingDistance = TRIALINFO.headingDistance; % cell
@@ -84,13 +87,12 @@ VISUAL.headingTime = TRIALINFO.headingTime; % cell
 VISUAL.fixationSizeD  = 0.5;  % degree
 VISUAL.fixationWindow = 2; % degree
 
-VISUAL.density   = 150;                                     % num/m^3
-VISUAL.coherence = 1; % in percent
+VISUAL.density   = 50;                                     % num/m^3
+VISUAL.coherence = 0.45; % in percent
 VISUAL.probability = VISUAL.coherence;
-VISUAL.lifeTime  = 120; % frame number
+VISUAL.lifeTime  = 3; % frame number
 
-VISUAL.starSize = 0.4;    % degree
-
+VISUAL.starSize = 0.5;    % degree
 
 % parameters for auditory cue
 AUDITORY.height = 0.05*coordinateMuilty; % m
@@ -98,9 +100,11 @@ AUDITORY.height = 0.05*coordinateMuilty; % m
 AUDITORY.headingDegree = TRIALINFO.headingDegree; % cell
 AUDITORY.headingDistance = TRIALINFO.headingDistance; % cell
 AUDITORY.headingTime = TRIALINFO.headingTime; % cell
+AUDITORY.coherenceFrameInitial = TRIALINFO.coherenceFrameInitial; %jitter parameter
+AUDITORY.coherenceFrameDuration = TRIALINFO.coherenceFrameDuration; %jitter parameter
 
 % % sample currently not work for double sources.
-
+a1 = -10; a2=-10.1 ;a3=10;a4=10.1;a5=30;a6=30.01;a7=5;a8=5.01;a9=25;a10=25.01;
 AUDITORY.sourceNum     = {30};
 AUDITORY.sourceHeading = {[180,180,180,180,180,180,180,180,180,180,180,180,180,180,180,180,180,180,180,180,180,180,180,180,180,180,180,180,180,180]}; % degree, 0 for [0 0 -z], 90 for [x 0 0], -90 for [-x 0 0], 180 for [0 0 +z]
 AUDITORY.sourceDistance = {[2*coordinateMuilty,2.1*coordinateMuilty;2*coordinateMuilty,2.1*coordinateMuilty;2*coordinateMuilty,2.1*coordinateMuilty;
@@ -114,30 +118,27 @@ AUDITORY.sourceDistance = {[2*coordinateMuilty,2.1*coordinateMuilty;2*coordinate
                                  -0*coordinateMuilty,-0.1*coordinateMuilty;-0*coordinateMuilty,-0.1*coordinateMuilty;-0*coordinateMuilty,-0.1*coordinateMuilty;
                                  -0*coordinateMuilty,-0.1*coordinateMuilty;-0*coordinateMuilty,-0.1*coordinateMuilty;-0*coordinateMuilty,-0.1*coordinateMuilty;
                                  -0*coordinateMuilty,-0.1*coordinateMuilty;-0*coordinateMuilty,-0.1*coordinateMuilty;-0*coordinateMuilty,-0.1*coordinateMuilty;
-                                 -0*coordinateMuilty,-0.1*coordinateMuilty]};%{[-2.7*coordinateMuilty,-2.7*coordinateMuilty;-1.7*coordinateMuilty,-1.7*coordinateMuilty;-0.7*coordinateMuilty,-0.7*coordinateMuilty;0.30*coordinateMuilty,0.30*coordinateMuilty]}; % m
+                                 -0*coordinateMuilty,-0.1*coordinateMuilty]};
 AUDITORY.sourceDegree = {[-60,-48;-48,-36;-36,-24;-24,-12;-12,0;0,12;12,24;24,36;36,48;48,60;
                                -75,-60;-60,-45;-45,-30;-30,-15;-15,0;0,15;15,30;30,45;45,60;60,75;
                                -70,-56;-56,-42;-42,-28;-28,-14;-14,0;0,14;14,28;28,42;42,56;56,70]}; % degree for position [-55,-35;35,55] [-30,-10;10,30]
-% % AUDITORY.sourceDegree = {[-70,70;-70,70;-70,70;-70,70;-70,70;-70,70;-70,70;-70,70;-70,70;-70,70;
-% %                                -70,70;-70,70;-70,70;-70,70;-70,70;-70,70;-70,70;-70,70;-70,70;-70,70;
-% %                                -70,70;-70,70;-70,70;-70,70;-70,70;-70,70;-70,70;-70,70;-70,70;-70,70]}
-AUDITORY.sourceLifeTimeSplit =1;%cell2mat(AUDITORY.sourceNum);
+AUDITORY.sourceLifeTimeSplit =60;%cell2mat(AUDITORY.sourceNum);
 
 %----test for fixation source
 % AUDITORY.sourceNum     = {30};
 % AUDITORY.sourceHeading = {[180,180,180,180,180,180,180,180,180,180,180,180,180,180,180,180,180,180,180,180,180,180,180,180,180,180,180,180,180,180]}; % degree, 0 for [0 0 -z], 90 for [x 0 0], -90 for [-x 0 0], 180 for [0 0 +z]
-% AUDITORY.sourceDistance = {[ 2*coordinateMuilty,2.1*coordinateMuilty;2*coordinateMuilty,2.1*coordinateMuilty;;2*coordinateMuilty,2.1*coordinateMuilty;
-%                                  2*coordinateMuilty,2.1*coordinateMuilty;2*coordinateMuilty,2.1*coordinateMuilty;;2*coordinateMuilty,2.1*coordinateMuilty;
-%                                  2*coordinateMuilty,2.1*coordinateMuilty;2*coordinateMuilty,2.1*coordinateMuilty;;2*coordinateMuilty,2.1*coordinateMuilty;;
-%                                  2*coordinateMuilty,2.1*coordinateMuilty;
-%                                  -2*coordinateMuilty,-2.1*coordinateMuilty;-2*coordinateMuilty,-2.1*coordinateMuilty;-2*coordinateMuilty,-2.1*coordinateMuilty;
-%                                  -2*coordinateMuilty,-2.1*coordinateMuilty;-2*coordinateMuilty,-2.1*coordinateMuilty;-2*coordinateMuilty,-2.1*coordinateMuilty;
-%                                  -2*coordinateMuilty,-2.1*coordinateMuilty;-2*coordinateMuilty,-2.1*coordinateMuilty;-2*coordinateMuilty,-2.1*coordinateMuilty;
-%                                  -2*coordinateMuilty,-2.1*coordinateMuilty;
-%                                  -5*coordinateMuilty,-5.1*coordinateMuilty;-5*coordinateMuilty,-5.1*coordinateMuilty;-5*coordinateMuilty,-5.1*coordinateMuilty;
-%                                  -5*coordinateMuilty,-5.1*coordinateMuilty;-5*coordinateMuilty,-5.1*coordinateMuilty;-5*coordinateMuilty,-5.1*coordinateMuilty;
-%                                  -5*coordinateMuilty,-5.1*coordinateMuilty;-5*coordinateMuilty,-5.1*coordinateMuilty;-5*coordinateMuilty,-5.1*coordinateMuilty;
-%                                  -5*coordinateMuilty,-5.1*coordinateMuilty]}; % m
+% AUDITORY.sourceDistance = {[0.5*coordinateMuilty,0.5*coordinateMuilty;0.5*coordinateMuilty,0.5*coordinateMuilty;0.5*coordinateMuilty,0.5*coordinateMuilty;
+%                                  0.5*coordinateMuilty,0.5*coordinateMuilty;0.5*coordinateMuilty,0.5*coordinateMuilty;0.5*coordinateMuilty,0.5*coordinateMuilty;
+%                                  0.5*coordinateMuilty,0.5*coordinateMuilty;0.5*coordinateMuilty,0.5*coordinateMuilty;0.5*coordinateMuilty,0.5*coordinateMuilty;
+%                                  0.5*coordinateMuilty,0.5*coordinateMuilty;
+%                                  0.1*coordinateMuilty,0.1*coordinateMuilty;0.1*coordinateMuilty,0.1*coordinateMuilty;0.1*coordinateMuilty,0.1*coordinateMuilty;
+%                                  0.1*coordinateMuilty,0.1*coordinateMuilty;0.1*coordinateMuilty,0.1*coordinateMuilty;0.1*coordinateMuilty,0.1*coordinateMuilty;
+%                                  0.1*coordinateMuilty,0.1*coordinateMuilty;0.1*coordinateMuilty,0.1*coordinateMuilty;0.1*coordinateMuilty,0.1*coordinateMuilty;
+%                                  0.1*coordinateMuilty,0.1*coordinateMuilty;
+%                                  -0.5*coordinateMuilty,-0.5*coordinateMuilty;-0.5*coordinateMuilty,-0.5*coordinateMuilty;-0.5*coordinateMuilty,-0.5*coordinateMuilty;
+%                                  -0.5*coordinateMuilty,-0.5*coordinateMuilty;-0.5*coordinateMuilty,-0.5*coordinateMuilty;-0.5*coordinateMuilty,-0.5*coordinateMuilty;
+%                                  -0.5*coordinateMuilty,-0.5*coordinateMuilty;-0.5*coordinateMuilty,-0.5*coordinateMuilty;-0.5*coordinateMuilty,-0.5*coordinateMuilty;
+%                                  -0.5*coordinateMuilty,-0.5*coordinateMuilty]};%{[-2.7*coordinateMuilty,-2.7*coordinateMuilty;-1.7*coordinateMuilty,-1.7*coordinateMuilty;-0.7*coordinateMuilty,-0.7*coordinateMuilty;0.30*coordinateMuilty,0.30*coordinateMuilty]}; % m
 % AUDITORY.sourceDegree = {[-60,-60;-48,-48;-36,-36;-24,-24;-12,-12;12,12;24,24;36,36;48,48;60,60;
 %                                -75,-75;-60,-60;-45,-45;-30,-30;-15,-15;15,15;30,30;45,45;60,60;75,75;
 %                                -70,-70;-56,-56;-42,-42;-28,-28;-14,-14;14,14;28,28;42,42;56,56;70,70]}; % degree for position [-55,-35;35,55] [-30,-10;10,30]
@@ -146,17 +147,16 @@ AUDITORY.sourceLifeTimeSplit =1;%cell2mat(AUDITORY.sourceNum);
 
 % AUDITORY.sourceNum     = {1};
 % AUDITORY.sourceHeading = {[180]}; % degree, 0 for [0 0 -z], 90 for [x 0 0], -90 for [-x 0 0], 180 for [0 0 +z]
-% AUDITORY.sourceDistance = {[2*coordinateMuilty,2.1*coordinateMuilty]};%{[-2.7*coordinateMuilty,-2.7*coordinateMuilty;-1.7*coordinateMuilty,-1.7*coordinateMuilty;-0.7*coordinateMuilty,-0.7*coordinateMuilty;0.30*coordinateMuilty,0.30*coordinateMuilty]}; % m
-% AUDITORY.sourceDegree = {[-75,-75]}; % degree for position [-55,-35;35,55] [-30,-10;10,30]
+% AUDITORY.sourceDistance = {[1.2*coordinateMuilty,1.2*coordinateMuilty]};%{[-2.7*coordinateMuilty,-2.7*coordinateMuilty;-1.7*coordinateMuilty,-1.7*coordinateMuilty;-0.7*coordinateMuilty,-0.7*coordinateMuilty;0.30*coordinateMuilty,0.30*coordinateMuilty]}; % m
+% AUDITORY.sourceDegree = {[-20,20]}; % degree for position [-55,-35;35,55] [-30,-10;10,30]
 % AUDITORY.sourceLifeTimeSplit =60;%cell2mat(AUDITORY.sourceNum);
 
 % parameter for coherence
-AUDITORY.MotionCoherence ={1}; % the influenced sources number = round( (1-coherence) * sourceNum )
+AUDITORY.MotionCoherence ={1}; % the influenced sources number = round( (1-coherence) * courceNum )
 AUDITORY.MotionCoherenceDirection = 1; % 0 random, 1 same as heading side in x axis
 AUDITORY.MotionCoherenceVelocity = 2;% how many times of the heading velocity in x-axis component
-AUDITORY.coherence ={1};
-AUDITORY.coherenceFrameInitial = {200}; %jitter parameter
-AUDITORY.coherenceFrameDuration = {30}; %jitter parameter
+AUDITORY.coherence ={0};
+
 
 
 % parameter for lift time
@@ -174,15 +174,20 @@ rng(seed,'twister');
 
 %% trial conditions and order
 calculateConditions();
-% TRIALINFO.trialConditions =
-% {visualDegree visualDistance visualTime, ...
-%       1               2               3
-%
-% auditoryDegree auditoryDistance auditoryTime sourceNum sourceDegree(:) sourceDistance(:) sourceHead(:) Motioncoherence coherence
-%       4               5               6                7              8               9                  10              11                12 
-% coherenceFrameInitial coherenceFrameDuration}
-%           13                   14   
-
+    % TRIALINFO.trialConditions =
+    % {visualCoherenceDuration  visualCoherenceInitial
+    %       1                           2
+    % visualDegree visualDistance visualTime, ...
+    %       3            4              5
+    %
+    % auditoryCoherenceDuration  auditoryCoherenceInitial
+    %       6                               7
+    % auditoryDegree auditoryDistance auditoryTime ...
+    %       8                9              10
+    %
+    % sourceNum sourceDegree(:) sourceDistance(:) sourceHead(:) MotoionCoherence  coherence
+    %       11       12              13               14              15              16 
+    % }
 trialIndex = repmat(1:size(TRIALINFO.trialConditions,1),1,TRIALINFO.repetition);
 trialNum = size(trialIndex,2);
 trialOrder = randperm(trialNum);
@@ -251,7 +256,7 @@ calculateFrustum(coordinateMuilty);
 VISUAL.dimensionY = SCREEN.heightM/SCREEN.distance*FRUSTUM.clipFar;
 
 %[VISUAL.dimensionX, VISUAL.dimensionZ] = generateDimensionField(AUDITORY.headingDistance,...
-   % VISUAL.headingDegree,FRUSTUM.checkLeft,FRUSTUM.checkRight,FRUSTUM.clipFar);
+%    VISUAL.headingDegree,FRUSTUM.checkLeft,FRUSTUM.checkRight,FRUSTUM.clipFar);
 auditoryLifetimeF = calculateAuditoryLifetime(AUDITORY.headingTime,AUDITORY.sourceLifeTimeSplit,SCREEN.refreshRate);
 
 Screen('BeginOpenGL', win);
@@ -354,42 +359,54 @@ trialI = 1;
 sourceFileList = cell(nsources,trialNum);
 
 while trialI < trialNum+1
-
+    
     [~, ~, keyCode]=KbCheck;
     if keyCode(escape)
         break
     end
     
     % TRIALINFO.trialConditions =
-    % {visualDegree visualDistance visualTime, ...
-    %       1                           2                        3
+    % {visualCoherenceDuration  visualCoherenceInitial
+    %       1                           2
+    % visualDegree visualDistance visualTime, ...
+    %       3            4              5
     %
+    % auditoryCoherenceDuration  auditoryCoherenceInitial
+    %       6                               7
     % auditoryDegree auditoryDistance auditoryTime ...
-    %       4                                   5                           6
+    %       8                9              10
     %
     % sourceNum sourceDegree(:) sourceDistance(:) sourceHead(:) MotoionCoherence  coherence
-    %       7                      8                                  9                        10                 11               12 
-    % coherenceFrameInitial coherenceFrameDuration}
-    %           13                   14   
+    %       11       12              13               14              15              16 
+    % }
+      
     conditioni = TRIALINFO.trialConditions(trialIndex(trialOrder(trialI)),:);
-    visualHeadingi = cell2mat(conditioni(1:3));
-    auditoryHeadingi = cell2mat(conditioni(4:6));
-    auditorySourcei = conditioni(7:10);
+    visualJitteri = cell2mat(conditioni(1:2));
+    visualHeadingi = cell2mat(conditioni(3:5));
+    auditoryJitteri = cell2mat(conditioni(6:7))
+    auditoryHeadingi = cell2mat(conditioni(8:10));
+    auditorySourcei = conditioni(11:14);
     visualPresent = ~any(isnan(visualHeadingi));
     soundPresent = ~any(isnan(auditorySourcei{1}));
-    MotionCoherencei = cell2mat(conditioni(11));
-    coherencei = cell2mat(conditioni(12));
+    MotionCoherencei = cell2mat(conditioni(15));
+    coherencei = cell2mat(conditioni(16));
     % jitter parameters
-    coherenceFrameInitiali = cell2mat(conditioni(13))+randi(55);
-    coherenceFrameDurationi = cell2mat(conditioni(14));
-    coherenceFrameTerminali = coherenceFrameInitiali + coherenceFrameDurationi;
-    coherenceFramei = (coherenceFrameInitiali: coherenceFrameTerminali);
+    Randy=randi(120-visualJitteri(2) - visualJitteri(1));
+    visualJitteri(2)=visualJitteri(2)+Randy;
+    auditoryJitteri(2)=auditoryJitteri(2)+Randy
+    visualFrameTerminali = visualJitteri(2) + visualJitteri(1);
+    auditoryFrameTerminali = auditoryJitteri(2) + auditoryJitteri(1);
     
-    
+    visualCoherenceFramei = (visualJitteri(2):visualFrameTerminali);
+    auditoryCoherenceFramei = (auditoryJitteri(2):auditoryFrameTerminali);
+%     coherenceFrameInitiali = cell2mat(conditioni(13))+randi();
+%     coherenceFrameDuationi = cell2mat(conditioni(14))+randi();
+%     coherenceFrameTerminali = coherenceFrameInitiali + coherenceFrameDurationi;
+%     coherenceFramei = (coherenceFrameInitiali: coherenceFrameTerminali);
     
     if visualPresent
         [VISUAL.dimensionX, VISUAL.dimensionZ] = generateDimensionField(AUDITORY.headingDistance,...
-        visualHeadingi(1),FRUSTUM.checkLeft,FRUSTUM.checkRight,FRUSTUM.clipFar);
+        VISUAL.headingDegree,FRUSTUM.checkLeft,FRUSTUM.checkRight,FRUSTUM.clipFar);
         GenerateStarField();
         [vx,vy,vz,vfx,vfy,vfz] = calMove(visualHeadingi,SCREEN.refreshRate);
     else
@@ -421,7 +438,7 @@ while trialI < trialNum+1
             sources=sources+2;
         end
         
-       %joker = randi(length(soundFiles));
+        %joker = randi(length(soundFiles));
         for i = 1:nsources
             %filei = mod(i+joker,length(soundFiles))+1;
             filei = mod(i,length(soundFiles))+1;
@@ -456,7 +473,7 @@ while trialI < trialNum+1
             %             alSourcef(sources(i), AL.GAIN, 0.5);
             %         end
             %     end
-            alSourcef(sources(i), AL.GAIN, 0.5);
+            alSourcef(sources(i), AL.GAIN, 0.25);
             alSourcef(sources(i), AL.CONE_INNER_ANGLE, 360);
             alSourcef(sources(i), AL.CONE_OUTER_ANGLE, 360);
         end
@@ -537,23 +554,20 @@ while trialI < trialNum+1
     % start giving frames
     for framei = 1:frameNum
         if visualPresent
-            if ismember (framei,coherenceFramei) == 1
+            if ismember (framei,visualCoherenceFramei)
                 VISUAL.probability = 1;
                 modifyStarField();
-            end    
-            if  ismember (framei,coherenceFramei) == 0
+            else  
                 VISUAL.probability = 0;
                 modifyStarField();
             end
-        
             if mod(framei,VISUAL.lifeTime)==0
                 GenerateStarField();
             end
         end
-    
         if soundPresent
             
-            if mod(framei,auditoryLifetimeF)==0 && framei~=frameNum && ismember (framei,coherenceFramei) == 0
+            if mod(framei,auditoryLifetimeF)==0 && framei~=frameNum && ismember (framei,auditoryCoherenceFramei) == 0
                 for i = 1:auditorySourcei{1}
                     if coherencei < rand ()
                     alSource3f(sources(i), AL.DIRECTION, sind(auditorySourcei{end}(i)), 0, -cosd(auditorySourcei{end}(i)));
