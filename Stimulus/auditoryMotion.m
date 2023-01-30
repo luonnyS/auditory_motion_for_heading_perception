@@ -42,6 +42,7 @@ rightKey  = KbName('RightArrow');
 upArror   = KbName('UpArrow');
 cKey      = KbName('c'); % force calibration, temporally not in use
 enter     = KbName('Return');
+Pause     = KbName('p');
 
 pageUp = KbName('pageup'); % increase binocular deviation
 pageDown = KbName('pagedown'); % decrease binocular deviation
@@ -58,7 +59,7 @@ TRIALINFO.headingDistance = {0.5*coordinateMuilty};
 TRIALINFO.headingTime      = {2}; % second
 TRIALINFO.stimulusType     = [1]; % 0 for visual only, 1 for auditory only, 2 for both provided
 TRIALINFO.coherenceFrameInitial = {20}; %jitter parameter
-TRIALINFO.coherenceFrameDuration = {60}; %jitter parameter
+TRIALINFO.coherenceFrameDuration = {40,50}; %jitter parameter
 
 TRIALINFO.choicePeriod        = 3; % second
 TRIALINFO.intertrialInterval = 1; % second
@@ -365,9 +366,17 @@ while trialI < trialNum+1
         break
     end
     
+  
     if mod(trialI,60)==0
-        pause(90);
+        [~, ~, ~] = DrawFormattedText(win, '60s rest','center',SCREEN.center(2)/2,[20 200 20]);
+        Screen('TextBackgroundColor',win, [0 0 0 0]);
+        Screen('DrawingFinished',win);
+        Screen('Flip',win,0,0);
+        pause(60);
+        
     end
+    
+  
     % TRIALINFO.trialConditions =
     % {visualCoherenceDuration  visualCoherenceInitial
     %       1                           2
@@ -394,7 +403,7 @@ while trialI < trialNum+1
     MotionCoherencei = cell2mat(conditioni(15));
     coherencei = cell2mat(conditioni(16));
     % jitter parameters
-    Randy=randi(120-visualJitteri(2) - visualJitteri(1));
+    Randy=randi(120-auditoryJitteri(2) - auditoryJitteri(1));
     visualJitteri(2)=visualJitteri(2)+Randy;
     auditoryJitteri(2)=auditoryJitteri(2)+Randy
     visualFrameTerminali = visualJitteri(2) + visualJitteri(1);
@@ -619,6 +628,7 @@ while trialI < trialNum+1
         elseif keyCode(skipKey)
             break
         end
+       
         
         if soundPresent
             % for auditory cue
@@ -767,6 +777,7 @@ while trialI < trialNum+1
             if eyelinkMode
                 Eyelink('message', ['Missing ' num2str(trialI)]);
             end
+    
         end
         Screen('TextBackgroundColor',win, [0 0 0 0]);
         Screen('DrawingFinished',win);
@@ -824,6 +835,7 @@ while trialI < trialNum+1
     end
     pause(TRIALINFO.intertrialInterval-toc(tti));
     %pause(TRIALINFO.intertrialInterval);
+    
 end
 
 
