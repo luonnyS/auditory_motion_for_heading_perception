@@ -1,7 +1,7 @@
 close all;
 clear all;
 
-FileName=('D:\LQY\auditory_motion_for_heading_perception\Stimulus\data\auditoryMotion_tester4_40to50_2301131420.mat');
+FileName=('D:\LQY\auditory_motion_for_heading_perception\Stimulus\data\auditoryMotion_ZY_60frame_2301131715.mat');
 [pathstr,name]=fileparts(FileName);
 load(fullfile(pathstr,name));
 color=['b','k','r','p'];
