@@ -53,16 +53,16 @@ feedbackDuration = 1; % unit s
 
 %% parameters
 coordinateMuilty = 1; % convert m to coordinate system for moving distance etc.
-TRIALINFO.repetition      =10;
+TRIALINFO.repetition      =8;
 TRIALINFO.headingDegree   = {-40,40,-25,25,-10,10,-5,5};%{8,-8,4,-4,2,-2,1,-1};
 TRIALINFO.headingDistance = {0.5*coordinateMuilty};
 TRIALINFO.headingTime      = {2}; % second
 TRIALINFO.stimulusType     = [1]; % 0 for visual only, 1 for auditory only, 2 for both provided
 TRIALINFO.coherenceFrameInitial = {20}; %jitter parameter
-TRIALINFO.coherenceFrameDuration = {40,50}; %jitter parameter
+TRIALINFO.coherenceFrameDuration = {30}; %jitter parameter
 
-TRIALINFO.choicePeriod        = 3; % second
-TRIALINFO.intertrialInterval = 1; % second
+TRIALINFO.choicePeriod        = 2; % second
+TRIALINFO.intertrialInterval = 2; % second
 TRIALINFO.fixationPeriod     = 0; % second
 TRIALINFO.fixationSizeD      = 0.25; % degree
 
@@ -88,12 +88,12 @@ VISUAL.headingTime = TRIALINFO.headingTime; % cell
 VISUAL.fixationSizeD  = 0.5;  % degree
 VISUAL.fixationWindow = 2; % degree
 
-VISUAL.density   = 50;                                     % num/m^3
+VISUAL.density   = 150;                                     % num/m^3
 VISUAL.coherence = 0.45; % in percent
 VISUAL.probability = VISUAL.coherence;
 VISUAL.lifeTime  = 3; % frame number
 
-VISUAL.starSize = 0.5;    % degree
+VISUAL.starSize = 0.2;    % degree
 
 % parameters for auditory cue
 AUDITORY.height = 0.05*coordinateMuilty; % m
@@ -367,7 +367,7 @@ while trialI < trialNum+1
     end
     
   
-    if mod(trialI,60)==0
+    if mod(trialI,66)==0
         [~, ~, ~] = DrawFormattedText(win, '60s rest','center',SCREEN.center(2)/2,[20 200 20]);
         Screen('TextBackgroundColor',win, [0 0 0 0]);
         Screen('DrawingFinished',win);
@@ -395,7 +395,7 @@ while trialI < trialNum+1
     conditioni = TRIALINFO.trialConditions(trialIndex(trialOrder(trialI)),:);
     visualJitteri = cell2mat(conditioni(1:2));
     visualHeadingi = cell2mat(conditioni(3:5));
-    auditoryJitteri = cell2mat(conditioni(6:7))
+    auditoryJitteri = cell2mat(conditioni(6:7));
     auditoryHeadingi = cell2mat(conditioni(8:10));
     auditorySourcei = conditioni(11:14);
     visualPresent = ~any(isnan(visualHeadingi));
@@ -403,9 +403,11 @@ while trialI < trialNum+1
     MotionCoherencei = cell2mat(conditioni(15));
     coherencei = cell2mat(conditioni(16));
     % jitter parameters
+    %Randy=0; 
+    %Randy=randi(120-visualJitteri(2) - visualJitteri(1));
     Randy=randi(120-auditoryJitteri(2) - auditoryJitteri(1));
     visualJitteri(2)=visualJitteri(2)+Randy;
-    auditoryJitteri(2)=auditoryJitteri(2)+Randy
+    auditoryJitteri(2)=auditoryJitteri(2)+Randy;
     visualFrameTerminali = visualJitteri(2) + visualJitteri(1);
     auditoryFrameTerminali = auditoryJitteri(2) + auditoryJitteri(1);
     
@@ -742,7 +744,7 @@ while trialI < trialNum+1
         Screen('DrawingFinished',win);
         Screen('Flip',win,0,0);
         
-        timei = [conditioni{3}, conditioni{6}];
+        timei = [conditioni{5}, conditioni{10}];
         timei = max(timei(~isnan(timei)));
         while toc(startChoice) <= TRIALINFO.choicePeriod+timei
             [ ~, ~, keyCode ] = KbCheck;

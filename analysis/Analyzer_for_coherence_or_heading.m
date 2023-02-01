@@ -1,13 +1,13 @@
 close all;
 clear all;
 
-FileName=('D:\LQY\auditory_motion_for_heading_perception\Stimulus\data\auditoryMotion_ZY_60frame_2301131715.mat');
+FileName=('D:\LQY\auditory_motion_for_heading_perception\Stimulus\data\auditoryMotion__2302011858.mat');
 [pathstr,name]=fileparts(FileName);
 load(fullfile(pathstr,name));
 color=['b','k','r','p'];
-coherent_duration=unique(cell2mat(conditionIndex(:,14)));
-conditionIndex=conditionIndex(find(cell2mat(conditionIndex(:,14))==coherent_duration(1)),:);
-choice=choice(cell2mat(conditionIndex(:,15)),:);
+coherent_duration=unique(cell2mat(conditionIndex(:,6)));%initial or duration
+conditionIndex=conditionIndex(find(cell2mat(conditionIndex(:,6))==coherent_duration(1)),:);%initial or duration
+choice=choice(cell2mat(conditionIndex(:,17)),:);% trail number
 
 %get number of parameters (X here) u need to fit in AUDITORY struct
 %coh Analyzer: "coherence"; heading Analyzer: "headingDegree"
@@ -15,21 +15,21 @@ Parameter_need_to_fit='headingDegree';% "coherence" or "headingDegree"
 %------------get modality-------
 if ismember(0,TRIALINFO.stimulusType)
    Modality_need_to_fit=VISUAL;
-   VisTrial=find(isnan(cell2mat(conditionIndex(:,5))));
+   VisTrial=find(isnan(cell2mat(conditionIndex(:,9))));
    Vis_conditionIndex=conditionIndex(VisTrial,:);
    Vis_choice=choice(VisTrial,:);
 end
 
 if ismember(1,TRIALINFO.stimulusType)
    Modality_need_to_fit=AUDITORY;
-   AudiTrial=find(isnan(cell2mat(conditionIndex(:,2))));
+   AudiTrial=find(isnan(cell2mat(conditionIndex(:,4))));
    Audi_conditionIndex=conditionIndex(AudiTrial,:);
    Audi_choice=choice(AudiTrial,:);
 end
    
 if ismember(2,TRIALINFO.stimulusType)
    Modality_need_to_fit=AUDITORY;
-   CombTrial=find(isnan(cell2mat(conditionIndex(:,2)))==0 & isnan(cell2mat(conditionIndex(:,5)))==0);
+   CombTrial=find(isnan(cell2mat(conditionIndex(:,4)))==0 & isnan(cell2mat(conditionIndex(:,9)))==0);
    Comb_conditionIndex=conditionIndex(CombTrial,:);
    Comb_choice=choice(CombTrial,:);
 end
@@ -47,9 +47,9 @@ switch Parameter_need_to_fit
           Number_X=length(getfield(Modality_need_to_fit, Parameter_need_to_fit));
           X=sort(cell2mat(getfield(Modality_need_to_fit, Parameter_need_to_fit)));  
           if ismember(0,TRIALINFO.stimulusType)
-              choice_X_list{modality}=[Vis_choice(:,2),cell2mat(Vis_conditionIndex(:,1))];
+              choice_X_list{modality}=[Vis_choice(:,2),cell2mat(Vis_conditionIndex(:,3))];
               for i=1:length(Vis_choice)
-                  if cell2mat(conditionIndex(i,2))<0
+                  if cell2mat(conditionIndex(i,4))<0
                       heading_degree{modality}(i,1)=1;
                   else heading_degree{modality}(i,1)=2;
                   end
@@ -58,7 +58,7 @@ switch Parameter_need_to_fit
           end
           
           if ismember(1,TRIALINFO.stimulusType)
-             choice_X_list{modality}=[Audi_choice(:,2),cell2mat(conditionIndex(:,13))];
+             choice_X_list{modality}=[Audi_choice(:,2),cell2mat(conditionIndex(:,16))];
              for i=1:length(Audi_choice)
                  if cell2mat(conditionIndex(i,5))<0
                      heading_degree{modality}(i,1)=1;
@@ -85,15 +85,15 @@ switch Parameter_need_to_fit
           
           
           if ismember(0,TRIALINFO.stimulusType)
-          choice_X_list{:,:,modality}=[Vis_choice(:,1),cell2mat(Vis_conditionIndex(:,1))];
+          choice_X_list{:,:,modality}=[Vis_choice(:,1),cell2mat(Vis_conditionIndex(:,3))];
           modality=modality+1;
           end
           if ismember(1,TRIALINFO.stimulusType)
-          choice_X_list{:,:,modality}=[Audi_choice(:,1),cell2mat(Audi_conditionIndex(:,4))];
+          choice_X_list{:,:,modality}=[Audi_choice(:,1),cell2mat(Audi_conditionIndex(:,8))];
           modality=modality+1;
           end
           if ismember(2,TRIALINFO.stimulusType)
-          choice_X_list{:,:,modality}=[Comb_choice(:,1),cell2mat(Comb_conditionIndex(:,1))];
+          choice_X_list{:,:,modality}=[Comb_choice(:,1),cell2mat(Comb_conditionIndex(:,3))];
           end
        
     otherwise disp('other value');

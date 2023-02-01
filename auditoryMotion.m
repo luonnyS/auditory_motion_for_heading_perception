@@ -52,9 +52,9 @@ feedbackDuration = 1; % unit s
 
 %% parameters
 coordinateMuilty = 1; % convert m to coordinate system for moving distance etc.
-TRIALINFO.repetition      =10;
+TRIALINFO.repetition      =8;
 TRIALINFO.headingDegree   = {-40,40,-25,25,-10,10,-5,5};%{8,-8,4,-4,2,-2,1,-1};
-TRIALINFO.headingDistance = {2*coordinateMuilty};
+TRIALINFO.headingDistance = {0.5*coordinateMuilty};
 TRIALINFO.headingTime      = {2}; % second
 TRIALINFO.stimulusType     = [1]; % 0 for visual only, 1 for auditory only, 2 for both provided
 
@@ -103,25 +103,25 @@ AUDITORY.headingTime = TRIALINFO.headingTime; % cell
 
 AUDITORY.sourceNum     = {30};
 AUDITORY.sourceHeading = {[180,180,180,180,180,180,180,180,180,180,180,180,180,180,180,180,180,180,180,180,180,180,180,180,180,180,180,180,180,180]}; % degree, 0 for [0 0 -z], 90 for [x 0 0], -90 for [-x 0 0], 180 for [0 0 +z]
-AUDITORY.sourceDistance = {[2*coordinateMuilty,2.1*coordinateMuilty;2*coordinateMuilty,2.1*coordinateMuilty;2*coordinateMuilty,2.1*coordinateMuilty;
-                                 2*coordinateMuilty,2.1*coordinateMuilty;2*coordinateMuilty,2.1*coordinateMuilty;2*coordinateMuilty,2.1*coordinateMuilty;
-                                 2*coordinateMuilty,2.1*coordinateMuilty;2*coordinateMuilty,2.1*coordinateMuilty;2*coordinateMuilty,2.1*coordinateMuilty;
-                                 2*coordinateMuilty,2.1*coordinateMuilty;
+AUDITORY.sourceDistance = {[1.5*coordinateMuilty,1.6*coordinateMuilty;1.5*coordinateMuilty,1.6*coordinateMuilty;1.5*coordinateMuilty,1.6*coordinateMuilty;
+                                 1.5*coordinateMuilty,1.6*coordinateMuilty;1.5*coordinateMuilty,1.6*coordinateMuilty;1.5*coordinateMuilty,1.6*coordinateMuilty;
+                                 1.5*coordinateMuilty,1.6*coordinateMuilty;1.5*coordinateMuilty,1.6*coordinateMuilty;1.5*coordinateMuilty,1.6*coordinateMuilty;
+                                 1.5*coordinateMuilty,1.6*coordinateMuilty;
                                  1*coordinateMuilty,1.1*coordinateMuilty;1*coordinateMuilty,1.1*coordinateMuilty;1*coordinateMuilty,1.1*coordinateMuilty;
                                  1*coordinateMuilty,1.1*coordinateMuilty;1*coordinateMuilty,1.1*coordinateMuilty;1*coordinateMuilty,1.1*coordinateMuilty;
                                  1*coordinateMuilty,1.1*coordinateMuilty;1*coordinateMuilty,1.1*coordinateMuilty;1*coordinateMuilty,1.1*coordinateMuilty;
                                  1*coordinateMuilty,1.1*coordinateMuilty;
-                                 -0*coordinateMuilty,-0.1*coordinateMuilty;-0*coordinateMuilty,-0.1*coordinateMuilty;-0*coordinateMuilty,-0.1*coordinateMuilty;
-                                 -0*coordinateMuilty,-0.1*coordinateMuilty;-0*coordinateMuilty,-0.1*coordinateMuilty;-0*coordinateMuilty,-0.1*coordinateMuilty;
-                                 -0*coordinateMuilty,-0.1*coordinateMuilty;-0*coordinateMuilty,-0.1*coordinateMuilty;-0*coordinateMuilty,-0.1*coordinateMuilty;
-                                 -0*coordinateMuilty,-0.1*coordinateMuilty]};%{[-2.7*coordinateMuilty,-2.7*coordinateMuilty;-1.7*coordinateMuilty,-1.7*coordinateMuilty;-0.7*coordinateMuilty,-0.7*coordinateMuilty;0.30*coordinateMuilty,0.30*coordinateMuilty]}; % m
+                                 0.5*coordinateMuilty,0.6*coordinateMuilty;0.5*coordinateMuilty,0.6*coordinateMuilty;0.5*coordinateMuilty,0.6*coordinateMuilty;
+                                 0.5*coordinateMuilty,0.6*coordinateMuilty;0.5*coordinateMuilty,0.6*coordinateMuilty;0.5*coordinateMuilty,0.6*coordinateMuilty;
+                                 0.5*coordinateMuilty,0.6*coordinateMuilty;0.5*coordinateMuilty,0.6*coordinateMuilty;0.5*coordinateMuilty,0.6*coordinateMuilty;
+                                 0.5*coordinateMuilty,0.6*coordinateMuilty]};%{[-2.7*coordinateMuilty,-2.7*coordinateMuilty;-1.7*coordinateMuilty,-1.7*coordinateMuilty;-0.7*coordinateMuilty,-0.7*coordinateMuilty;0.30*coordinateMuilty,0.30*coordinateMuilty]}; % m
 AUDITORY.sourceDegree = {[-60,-48;-48,-36;-36,-24;-24,-12;-12,0;0,12;12,24;24,36;36,48;48,60;
                                -75,-60;-60,-45;-45,-30;-30,-15;-15,0;0,15;15,30;30,45;45,60;60,75;
                                -70,-56;-56,-42;-42,-28;-28,-14;-14,0;0,14;14,28;28,42;42,56;56,70]}; % degree for position [-55,-35;35,55] [-30,-10;10,30]
 % % AUDITORY.sourceDegree = {[-70,70;-70,70;-70,70;-70,70;-70,70;-70,70;-70,70;-70,70;-70,70;-70,70;
 % %                                -70,70;-70,70;-70,70;-70,70;-70,70;-70,70;-70,70;-70,70;-70,70;-70,70;
 % %                                -70,70;-70,70;-70,70;-70,70;-70,70;-70,70;-70,70;-70,70;-70,70;-70,70]}
-AUDITORY.sourceLifeTimeSplit =1;%cell2mat(AUDITORY.sourceNum);
+AUDITORY.sourceLifeTimeSplit =60;%cell2mat(AUDITORY.sourceNum);
 
 %----test for fixation source
 % AUDITORY.sourceNum     = {30};
@@ -154,9 +154,9 @@ AUDITORY.sourceLifeTimeSplit =1;%cell2mat(AUDITORY.sourceNum);
 AUDITORY.MotionCoherence ={1}; % the influenced sources number = round( (1-coherence) * sourceNum )
 AUDITORY.MotionCoherenceDirection = 1; % 0 random, 1 same as heading side in x axis
 AUDITORY.MotionCoherenceVelocity = 2;% how many times of the heading velocity in x-axis component
-AUDITORY.coherence ={1};
-AUDITORY.coherenceFrameInitial = {200}; %jitter parameter
-AUDITORY.coherenceFrameDuration = {30}; %jitter parameter
+AUDITORY.coherence ={0};
+AUDITORY.coherenceFrameInitial = {20}; %jitter parameter
+AUDITORY.coherenceFrameDuration = {60}; %jitter parameter
 
 
 % parameter for lift time
@@ -380,7 +380,7 @@ while trialI < trialNum+1
     MotionCoherencei = cell2mat(conditioni(11));
     coherencei = cell2mat(conditioni(12));
     % jitter parameters
-    coherenceFrameInitiali = cell2mat(conditioni(13))+randi(55);
+    coherenceFrameInitiali = cell2mat(conditioni(13))+randi(40);
     coherenceFrameDurationi = cell2mat(conditioni(14));
     coherenceFrameTerminali = coherenceFrameInitiali + coherenceFrameDurationi;
     coherenceFramei = (coherenceFrameInitiali: coherenceFrameTerminali);
