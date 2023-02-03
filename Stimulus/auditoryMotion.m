@@ -53,16 +53,16 @@ feedbackDuration = 1; % unit s
 
 %% parameters
 coordinateMuilty = 1; % convert m to coordinate system for moving distance etc.
-TRIALINFO.repetition      =8;
+TRIALINFO.repetition      =10;
 TRIALINFO.headingDegree   = {-40,40,-25,25,-10,10,-5,5};%{8,-8,4,-4,2,-2,1,-1};
 TRIALINFO.headingDistance = {0.5*coordinateMuilty};
 TRIALINFO.headingTime      = {2}; % second
 TRIALINFO.stimulusType     = [1]; % 0 for visual only, 1 for auditory only, 2 for both provided
 TRIALINFO.coherenceFrameInitial = {20}; %jitter parameter
-TRIALINFO.coherenceFrameDuration = {30}; %jitter parameter
+TRIALINFO.coherenceFrameDuration = {40,45,50,55,60}; %jitter parameter
 
 TRIALINFO.choicePeriod        = 2; % second
-TRIALINFO.intertrialInterval = 2; % second
+TRIALINFO.intertrialInterval = 1; % second
 TRIALINFO.fixationPeriod     = 0; % second
 TRIALINFO.fixationSizeD      = 0.25; % degree
 
@@ -91,7 +91,7 @@ VISUAL.fixationWindow = 2; % degree
 VISUAL.density   = 150;                                     % num/m^3
 VISUAL.coherence = 0.45; % in percent
 VISUAL.probability = VISUAL.coherence;
-VISUAL.lifeTime  = 3; % frame number
+VISUAL.lifeTime  = 120; % frame number
 
 VISUAL.starSize = 0.2;    % degree
 
@@ -360,19 +360,19 @@ trialI = 1;
 sourceFileList = cell(nsources,trialNum);
 
 while trialI < trialNum+1
-    
+    trialI
     [~, ~, keyCode]=KbCheck;
     if keyCode(escape)
         break
     end
     
   
-    if mod(trialI,66)==0
-        [~, ~, ~] = DrawFormattedText(win, '60s rest','center',SCREEN.center(2)/2,[20 200 20]);
+    if mod(trialI,82)==0
+        [~, ~, ~] = DrawFormattedText(win, '90s rest','center',SCREEN.center(2)/2,[20 200 20]);
         Screen('TextBackgroundColor',win, [0 0 0 0]);
         Screen('DrawingFinished',win);
         Screen('Flip',win,0,0);
-        pause(60);
+        pause(90);
         
     end
     
@@ -821,7 +821,7 @@ while trialI < trialNum+1
         if true%~bypassSourceGenerate
             % Delete buffer:
             try
-                alDeleteBuffers(nsources, buffers);
+                alDeleteSources(nsources, sources);
             catch
             end
             
@@ -830,7 +830,7 @@ while trialI < trialNum+1
             
             % Delete sources:
             try
-                alDeleteSources(nsources, sources);
+                alDeleteBuffers(nsources, buffers);
             catch
             end
         end
