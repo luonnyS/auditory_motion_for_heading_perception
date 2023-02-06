@@ -1,12 +1,12 @@
 close all;
 clear all;
 
-FileName=('D:\LQY\auditory_motion_for_heading_perception\Stimulus\data\auditoryMotion__2302011858.mat');
+FileName=('D:\LQY\auditory_motion_for_heading_perception\Stimulus\data\jitter\ZhangYue\auditoryMotion_ZHangYue-40to60frame_2302061503.mat');
 [pathstr,name]=fileparts(FileName);
 load(fullfile(pathstr,name));
 color=['b','k','r','p'];
 coherent_duration=unique(cell2mat(conditionIndex(:,6)));%initial or duration
-conditionIndex=conditionIndex(find(cell2mat(conditionIndex(:,6))==coherent_duration(1)),:);%initial or duration
+conditionIndex=conditionIndex(find(cell2mat(conditionIndex(:,6))==coherent_duration(2)),:);%initial or duration
 choice=choice(cell2mat(conditionIndex(:,17)),:);% trail number
 
 %get number of parameters (X here) u need to fit in AUDITORY struct

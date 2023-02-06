@@ -53,7 +53,7 @@ feedbackDuration = 1; % unit s
 
 %% parameters
 coordinateMuilty = 1; % convert m to coordinate system for moving distance etc.
-TRIALINFO.repetition      =10;
+TRIALINFO.repetition      =12;
 TRIALINFO.headingDegree   = {-40,40,-25,25,-10,10,-5,5};%{8,-8,4,-4,2,-2,1,-1};
 TRIALINFO.headingDistance = {0.5*coordinateMuilty};
 TRIALINFO.headingTime      = {2}; % second
@@ -368,11 +368,11 @@ while trialI < trialNum+1
     
   
     if mod(trialI,82)==0
-        [~, ~, ~] = DrawFormattedText(win, '90s rest','center',SCREEN.center(2)/2,[20 200 20]);
+        [~, ~, ~] = DrawFormattedText(win, '120s rest','center',SCREEN.center(2)/2,[20 200 20]);
         Screen('TextBackgroundColor',win, [0 0 0 0]);
         Screen('DrawingFinished',win);
         Screen('Flip',win,0,0);
-        pause(90);
+        pause(120);
         
     end
     
